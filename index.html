@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MUSTX // DEVSECOPS — Monochrome Portfolio</title>
+  
+  <!-- Google Fonts: Inter, JetBrains Mono & Noto Sans Arabic (for crisp Arabic & Kurdish Sorani) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+Arabic:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'Noto Sans Arabic', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Noto Sans Arabic', 'monospace'],
+          },
+          colors: {
+            obsidian: '#08090B',
+            offwhite: '#F5F3EF',
+            silver: '#8E929B',
+            slatehairline: '#1F2229',
+            crimson: '#E11D48',
+          },
+          letterSpacing: {
+            tightest: '-0.035em',
+            monowide: '0.08em',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style>
+    /* Strict Monochrome Theme Tokens */
+    :root {
+      --bg-primary: #08090B;
+      --bg-elevated: #0E1014;
+      --bg-card-active: #14171D;
+      --text-primary: #F5F3EF;
+      --text-secondary: #8E929B;
+      --border-hairline: #1F2229;
+      --border-hover: #F5F3EF;
+      --btn-primary-bg: #F5F3EF;
+      --btn-primary-text: #08090B;
+      --svg-stroke: #F5F3EF;
+      --svg-muted: #2A2E37;
+      --crimson-accent: #E11D48;
+    }
+
+    body.light-mode {
+      --bg-primary: #F5F3EF;
+      --bg-elevated: #ECE9E2;
+      --bg-card-active: #E3DFD5;
+      --text-primary: #08090B;
+      --text-secondary: #5A5E66;
+      --border-hairline: #D8D4CA;
+      --border-hover: #08090B;
+      --btn-primary-bg: #08090B;
+      --btn-primary-text: #F5F3EF;
+      --svg-stroke: #08090B;
+      --svg-muted: #C8C4BA;
+      --crimson-accent: #DC2626;
+    }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', 'Noto Sans Arabic', sans-serif;
+      transition: background-color 180ms ease, color 180ms ease;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* RTL Adjustments for Arabic & Kurdish */
+    [dir="rtl"] .font-mono-ltr {
+      direction: ltr;
+      unicode-bidi: isolate;
+    }
+
+    /* Structural Hairline Borders */
+    .hairline-b {
+      border-bottom: 1px solid var(--border-hairline);
+      transition: border-color 180ms ease;
+    }
+    .hairline-t {
+      border-top: 1px solid var(--border-hairline);
+      transition: border-color 180ms ease;
+    }
+    .hairline-all {
+      border: 1px solid var(--border-hairline);
+      transition: border-color 180ms ease, background-color 180ms ease;
+    }
+    .hairline-all:hover {
+      border-color: var(--border-hover);
+    }
+
+    /* Active Skill Card State */
+    .skill-card {
+      background-color: transparent;
+      border: 1px solid var(--border-hairline);
+      transition: all 160ms ease;
+    }
+    .skill-card:hover {
+      border-color: var(--border-hover);
+      background-color: var(--bg-elevated);
+    }
+    .skill-card.active {
+      border-color: var(--text-primary);
+      background-color: var(--bg-card-active);
+    }
+
+    /* Primary & Secondary Buttons */
+    .btn-solid {
+      background-color: var(--btn-primary-bg);
+      color: var(--btn-primary-text);
+      border: 1px solid var(--btn-primary-bg);
+      transition: opacity 150ms ease;
+    }
+    .btn-solid:hover {
+      opacity: 0.88;
+    }
+
+    .btn-ghost {
+      background-color: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-hairline);
+      transition: border-color 150ms ease, background-color 150ms ease;
+    }
+    .btn-ghost:hover {
+      border-color: var(--border-hover);
+    }
+
+    /* Subtle Underline Hover Link */
+    .nav-link {
+      position: relative;
+      color: var(--text-secondary);
+      transition: color 150ms ease;
+    }
+    .nav-link:hover {
+      color: var(--text-primary);
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      inset-inline-start: 0;
+      bottom: -3px;
+      width: 0%;
+      height: 1px;
+      background-color: var(--text-primary);
+      transition: width 180ms ease;
+    }
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    /* Grayscale Editorial Photo Treatment */
+    .portrait-photo {
+      filter: grayscale(100%) contrast(1.12);
+      transition: filter 250ms ease, transform 250ms ease;
+    }
+    .portrait-frame:hover .portrait-photo {
+      filter: grayscale(100%) contrast(1.2);
+    }
+
+    /* Discord Status Pulse Ring */
+    @keyframes statusPulse {
+      0%, 100% { transform: scale(1); opacity: 0.85; }
+      50% { transform: scale(1.65); opacity: 0; }
+    }
+    .status-pulse {
+      animation: statusPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+  </style>
+</head>
+<body class="selection:bg-neutral-500 selection:text-white">
+
+  <!-- Sticky Minimal Header -->
+  <header class="sticky top-0 z-40 hairline-b backdrop-blur-md" style="background-color: color-mix(in srgb, var(--bg-primary) 88%, transparent);">
+    <div class="max-w-6xl mx-auto px-4 sm:px-8 h-16 flex items-center justify-between gap-3">
+      <!-- Brand Monogram -->
+      <a href="#intro" class="font-mono font-mono-ltr text-xs uppercase tracking-monowide font-semibold flex items-center gap-2 shrink-0">
+        <span class="inline-block w-2 h-2 rounded-full" style="background-color: var(--crimson-accent);"></span>
+        <span>MUSTX // 00</span>
+      </a>
+
+      <!-- Navigation Links + Language Switcher + Invert Toggle -->
+      <div class="flex items-center gap-2.5 sm:gap-5">
+        <nav class="hidden md:flex items-center gap-6 text-sm">
+          <a href="#intro" data-i18n="navIntro" class="nav-link">Intro</a>
+          <a href="#skills" data-i18n="navSkills" class="nav-link">Skills</a>
+          <a href="#stack" data-i18n="navStack" class="nav-link">Stack</a>
+          <a href="#contact" data-i18n="navContact" class="nav-link">Contact</a>
+        </nav>
+
+        <!-- 3-Language Switcher (EN / AR / KU) -->
+        <div class="inline-flex items-center rounded hairline-all p-0.5 font-mono text-[11px]" role="group" aria-label="Language Switcher">
+          <button type="button" onclick="setLanguage('en')" id="lang-en" class="lang-btn px-2 py-1 rounded-sm cursor-pointer transition-colors">EN</button>
+          <button type="button" onclick="setLanguage('ar')" id="lang-ar" class="lang-btn px-2 py-1 rounded-sm cursor-pointer transition-colors">عربي</button>
+          <button type="button" onclick="setLanguage('ku')" id="lang-ku" class="lang-btn px-2 py-1 rounded-sm cursor-pointer transition-colors">کوردی</button>
+        </div>
+
+        <!-- Monochrome Invert Toggle -->
+        <button 
+          id="themeToggle" 
+          type="button"
+          aria-label="Invert Monochrome Theme"
+          class="btn-ghost rounded px-2.5 sm:px-3 py-1.5 font-mono font-mono-ltr text-[11px] uppercase tracking-monowide cursor-pointer flex items-center gap-1.5 shrink-0"
+        >
+          <span id="themeIndicator" class="inline-block w-2 h-2 rounded-full border" style="border-color: var(--text-primary); background-color: var(--text-primary);"></span>
+          <span class="hidden sm:inline">INVERT</span>
+          <span>[B/W]</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ========================================================= -->
+    <!-- SECTION 1: MAIN HERO & SHORT INTERVIEW / INTRO            -->
+    <!-- ========================================================= -->
+    <section id="intro" class="max-w-6xl mx-auto px-4 sm:px-8 pt-10 pb-16 sm:pt-16 sm:pb-24 hairline-b">
+      
+      <!-- Top Crimson Display Text: OBSESSION -->
+      <div class="mb-8 sm:mb-12">
+        <div class="flex items-center justify-between gap-4 mb-2">
+          <span data-i18n="heroEyebrow" class="font-mono text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+            [ 00 — CORE DRIVER ]
+          </span>
+          <span class="font-mono font-mono-ltr text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+            DEVSECOPS // FULL-STACK
+          </span>
+        </div>
+        <h2 
+          data-i18n="obsessionWord"
+          class="text-5xl sm:text-7xl md:text-8xl lg:text-[7.25rem] font-extrabold uppercase tracking-tighter leading-none select-none"
+          style="color: var(--crimson-accent);"
+        >
+          OBSESSION
+        </h2>
+      </div>
+
+      <!-- Asymmetric Swiss 2-Column Grid: Interview Bio + Portrait Frame -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
+        
+        <!-- Left Column: Name, Disciplines & Short Interview -->
+        <div class="lg:col-span-7 space-y-7">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 font-mono text-xs uppercase tracking-monowide px-2.5 py-1 rounded hairline-all" style="color: var(--text-secondary);">
+              <span class="inline-block w-1.5 h-1.5 rounded-full" style="background-color: var(--text-primary);"></span>
+              <span data-i18n="interviewBadge">PROFILE INTERVIEW // MUSTX</span>
+            </div>
+
+            <h1 class="text-4xl sm:text-6xl font-bold tracking-tightest leading-[1.08]">
+              <span data-i18n="greetingPrefix" class="font-normal" style="color: var(--text-secondary);">I am </span>
+              <span data-i18n="heroName">Mustx</span>
+            </h1>
+
+            <!-- Multidisciplinary Roles Strip -->
+            <p data-i18n="heroRoles" class="font-mono text-xs sm:text-sm uppercase tracking-monowide leading-relaxed pt-1" style="color: var(--text-primary);">
+              Full-Stack DevSecOps • Full-Stack Developer • Website Designer • Cybersecurity • Networking • Accounting
+            </p>
+          </div>
+
+          <!-- Short Interview Q&A Format -->
+          <div class="space-y-4 pt-2 hairline-t">
+            <div class="pt-4 space-y-2">
+              <p data-i18n="interviewQ1" class="font-mono text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+                Q: WHO IS MUSTX &amp; WHAT DO YOU BUILD?
+              </p>
+              <p data-i18n="interviewA1" class="text-base sm:text-lg leading-relaxed">
+                I am a multidisciplinary Full-Stack DevSecOps engineer, web designer, and security-focused builder. I bridge clean Swiss-grade visual design with hardened server infrastructure, networking, and financial logic—turning complex ideas into resilient digital systems.
+              </p>
+            </div>
+
+            <div class="pt-2 space-y-2">
+              <p data-i18n="interviewQ2" class="font-mono text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+                Q: WHAT DEFINES YOUR WORK ETHIC?
+              </p>
+              <p data-i18n="interviewA2" class="text-sm sm:text-base leading-relaxed" style="color: var(--text-secondary);">
+                Relentless precision. Whether configuring secure networks, balancing accounting ledgers, or shipping production code, I treat every detail as mission-critical.
+              </p>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-3.5 pt-2">
+            <a href="#skills" data-i18n="ctaExploreSkills" class="btn-solid rounded px-6 py-3.5 text-sm font-medium inline-flex items-center gap-2">
+              Explore My Skills
+            </a>
+            <a href="#contact" data-i18n="ctaConnect" class="btn-ghost rounded px-6 py-3.5 text-sm font-medium">
+              Connect &amp; Live Discord
+            </a>
+          </div>
+        </div>
+
+        <!-- Right Column: Monochrome Portrait Card with Interactive Photo Upload -->
+        <div class="lg:col-span-5">
+          <div class="portrait-frame hairline-all rounded-md overflow-hidden p-3 sm:p-4" style="background-color: var(--bg-elevated);">
+            <div class="relative aspect-[3/4] w-full rounded overflow-hidden hairline-all flex items-center justify-center" style="background-color: var(--bg-primary);">
+              
+              <!-- Default Architectural Monochrome Silhouette (Replaced immediately when Mustx uploads photo) -->
+              <div id="defaultAvatarPlaceholder" class="hidden w-full h-full flex flex-col items-center justify-center p-6 text-center select-none">
+                <svg viewBox="0 0 240 300" class="w-44 h-56 mb-4" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <!-- Technical Grid Crosshairs -->
+                  <line x1="120" y1="10" x2="120" y2="290" stroke="currentColor" stroke-opacity="0.15" stroke-dasharray="3 3" />
+                  <line x1="15" y1="150" x2="225" y2="150" stroke="currentColor" stroke-opacity="0.15" stroke-dasharray="3 3" />
+                  <rect x="20" y="20" width="200" height="260" stroke="currentColor" stroke-opacity="0.25" stroke-width="1" />
+                  <!-- Minimalist Geometric Bust -->
+                  <circle cx="120" cy="108" r="38" stroke="currentColor" stroke-width="1.5" />
+                  <path d="M52 255C52 206 82 174 120 174C158 174 188 206 188 255" stroke="currentColor" stroke-width="1.5" />
+                  <!-- Monogram Stamp -->
+                  <text x="120" y="113" text-anchor="middle" font-family="JetBrains Mono, monospace" font-size="13" font-weight="600" fill="currentColor" letter-spacing="2">MUSTX</text>
+                </svg>
+                <span data-i18n="photoHint" class="font-mono text-[11px] uppercase tracking-monowide max-w-[220px]" style="color: var(--text-secondary);">
+                  UPLOAD YOUR PHOTO TO DISPLAY IN MONOCHROME
+                </span>
+              </div>
+
+              <!-- Uploaded Photo Preview -->
+              <img 
+                id="userPortraitImg" 
+                src="portrait.png" 
+                alt="Mustx Portrait" 
+                class="portrait-photo w-full h-full object-cover"
+              />
+
+              <!-- Top Corner Technical Tag -->
+              <div class="absolute top-3 inset-x-3 flex items-center justify-between pointer-events-none">
+                <span class="font-mono font-mono-ltr text-[10px] uppercase tracking-monowide px-2 py-0.5 rounded backdrop-blur-md hairline-all" style="background-color: color-mix(in srgb, var(--bg-primary) 80%, transparent);">
+                  ID // MUSTX
+                </span>
+                <span class="font-mono font-mono-ltr text-[10px] uppercase tracking-monowide px-2 py-0.5 rounded backdrop-blur-md hairline-all" style="background-color: color-mix(in srgb, var(--bg-primary) 80%, transparent);">
+                  B&amp;W RAW
+                </span>
+              </div>
+            </div>
+
+            <!-- Caption Row Under Photo -->
+            <div class="pt-3 flex items-center justify-between font-mono text-[11px] uppercase tracking-monowide" style="color: var(--text-secondary);">
+              <span>MUSTX // PORTRAIT</span>
+              <span class="font-mono-ltr">37.19° N, 44.01° E</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Editorial Quote Bar -->
+      <div class="mt-14 pt-8 hairline-t flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <blockquote class="space-y-1.5 max-w-3xl">
+          <p data-i18n="heroQuote" class="text-lg sm:text-xl font-semibold tracking-tight italic">
+            “Ego + obsession forged every line of code, every system, and everything I have become.”
+          </p>
+          <footer class="font-mono text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+            — MUSTX // PERSONAL AXIOM
+          </footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 2: INTERACTIVE SKILLS MATRIX (8 CLICKABLE LOGOS)  -->
+    <!-- ========================================================= -->
+    <section id="skills" class="max-w-6xl mx-auto px-4 sm:px-8 py-20 sm:py-28 hairline-b">
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-10">
+        <div>
+          <span data-i18n="skillsEyebrow" class="font-mono text-xs uppercase tracking-monowide block mb-2" style="color: var(--text-secondary);">
+            [ 01 — CORE COMPETENCIES ]
+          </span>
+          <h2 data-i18n="skillsTitle" class="text-2xl sm:text-4xl font-bold tracking-tightest">
+            Multidisciplinary Skills
+          </h2>
+        </div>
+        <p data-i18n="skillsInstruction" class="font-mono text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+          PRESS ANY SKILL CARD TO INSPECT DETAILS
+        </p>
+      </div>
+
+      <!-- 8 Clickable Skill Cards Grid -->
+      <div id="skillsGrid" class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+        <!-- Rendered cleanly by JS with inline SVG logos -->
+      </div>
+
+      <!-- Interactive Skill Description Inspector Panel -->
+      <div id="skillInspector" class="mt-6 rounded-md p-6 sm:p-8 hairline-all transition-all" style="background-color: var(--bg-elevated);">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+          <div class="lg:col-span-4 space-y-2">
+            <div class="flex items-center gap-3">
+              <div id="inspectorIcon" class="w-10 h-10 rounded hairline-all flex items-center justify-center" style="background-color: var(--bg-primary);"></div>
+              <div>
+                <span id="inspectorIndex" class="font-mono font-mono-ltr text-xs uppercase tracking-monowide block" style="color: var(--text-secondary);">
+                  SKILL // 01
+                </span>
+                <h3 id="inspectorTitle" class="text-xl font-bold tracking-tight">
+                  Website Designer
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-8 space-y-4">
+            <p id="inspectorDesc" class="text-base leading-relaxed">
+              Crafting ultra-clean, high-contrast user interfaces and responsive web experiences built on Swiss grid precision, strong typography, and seamless usability across desktop and mobile devices.
+            </p>
+            <div id="inspectorBullets" class="flex flex-wrap gap-2 pt-1">
+              <!-- Key capabilities pills injected dynamically -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 3: CODING LANGUAGES & DEVSECOPS TOOLCHAIN         -->
+    <!-- ========================================================= -->
+    <section id="stack" class="max-w-6xl mx-auto px-4 sm:px-8 py-20 sm:py-28 hairline-b">
+      <div class="mb-12">
+        <span data-i18n="stackEyebrow" class="font-mono text-xs uppercase tracking-monowide block mb-2" style="color: var(--text-secondary);">
+          [ 02 — TECHNICAL ARSENAL ]
+        </span>
+        <h2 data-i18n="stackTitle" class="text-2xl sm:text-4xl font-bold tracking-tightest">
+          Languages, DevOps &amp; Tooling
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Column A: Programming & Query Languages -->
+        <div class="rounded-md p-6 sm:p-7 hairline-all space-y-6" style="background-color: var(--bg-elevated);">
+          <div class="flex items-center justify-between pb-4 hairline-b">
+            <h3 data-i18n="stackLangHeading" class="text-lg font-bold tracking-tight">
+              Programming &amp; Markup Languages
+            </h3>
+            <span class="font-mono font-mono-ltr text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+              09 // CORE
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono font-mono-ltr text-xs">
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">PY</span>
+              <span>Python</span>
+            </div>
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">JS</span>
+              <span>JavaScript</span>
+            </div>
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">TS</span>
+              <span>TypeScript</span>
+            </div>
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">C++</span>
+              <span>C / C++</span>
+            </div>
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">GO</span>
+              <span>Go (Golang)</span>
+            </div>
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">SH</span>
+              <span>Bash / Shell</span>
+            </div>
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">SQL</span>
+              <span>PostgreSQL / SQL</span>
+            </div>
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">PHP</span>
+              <span>PHP / Laravel</span>
+            </div>
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <span class="font-bold">UI</span>
+              <span>HTML5 / CSS3</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column B: Git, Docker, GitHub, Cloud & Security Infrastructure -->
+        <div class="rounded-md p-6 sm:p-7 hairline-all space-y-6" style="background-color: var(--bg-elevated);">
+          <div class="flex items-center justify-between pb-4 hairline-b">
+            <h3 data-i18n="stackToolsHeading" class="text-lg font-bold tracking-tight">
+              DevSecOps, Containers &amp; Infrastructure
+            </h3>
+            <span class="font-mono font-mono-ltr text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+              09 // OPS
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3 font-mono font-mono-ltr text-xs">
+            <!-- Git -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="6" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><circle cx="18" cy="6" r="2.5"/><path d="M6 8.5V15.5C6 16.88 7.12 18 8.5 18H15.5"/><path d="M18 8.5V15.5"/></svg>
+              <span>Git</span>
+            </div>
+            <!-- GitHub -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              <span>GitHub</span>
+            </div>
+            <!-- Docker -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="10" width="4" height="3"/><rect x="8" y="10" width="4" height="3"/><rect x="13" y="10" width="4" height="3"/><rect x="8" y="6" width="4" height="3"/><rect x="13" y="6" width="4" height="3"/><path d="M2 14h18c1.5 0 2-1 2-2-1 0-2 .5-2.5 1"/></svg>
+              <span>Docker</span>
+            </div>
+            <!-- Linux -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="16" rx="2"/><polyline points="7 10 10 13 7 16"/><line x1="12" y1="16" x2="17" y2="16"/></svg>
+              <span>Linux / Kali</span>
+            </div>
+            <!-- CI/CD -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+              <span>CI/CD Actions</span>
+            </div>
+            <!-- Nginx -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="12 2 21 7 21 17 12 22 3 17 3 7 12 2"/><path d="M9 15V9l6 6V9"/></svg>
+              <span>Nginx Proxy</span>
+            </div>
+            <!-- Kubernetes -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="2.5"/><line x1="12" y1="2" x2="12" y2="9.5"/><line x1="12" y1="14.5" x2="12" y2="22"/><line x1="2" y1="12" x2="9.5" y2="12"/><line x1="14.5" y1="12" x2="22" y2="12"/></svg>
+              <span>Kubernetes</span>
+            </div>
+            <!-- React / Next -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="2"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg>
+              <span>React / Next.js</span>
+            </div>
+            <!-- WireGuard / Net -->
+            <div class="hairline-all rounded p-3 flex items-center gap-2.5" style="background-color: var(--bg-primary);">
+              <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>Zero-Trust / VPN</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ========================================================= -->
+    <!-- SECTION 4: CONTACT CHANNELS & LIVE DISCORD RICH PRESENCE  -->
+    <!-- ========================================================= -->
+    <section id="contact" class="max-w-6xl mx-auto px-4 sm:px-8 pt-20 pb-14 sm:pt-28">
+      <div class="mb-12">
+        <span data-i18n="contactEyebrow" class="font-mono text-xs uppercase tracking-monowide block mb-2" style="color: var(--text-secondary);">
+          [ 03 — DIRECT CHANNELS &amp; TELEMETRY ]
+        </span>
+        <h2 data-i18n="contactTitle" class="text-3xl sm:text-5xl font-bold tracking-tightest">
+          Connect With Mustx
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start pb-16 hairline-b">
+        
+        <!-- Left 7 Columns: Gmail, Instagram, TikTok, Discord, GitHub -->
+        <div class="lg:col-span-7 space-y-3">
+          
+          <!-- Gmail Row (with one-click Copy) -->
+          <div class="hairline-all rounded-md p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4" style="background-color: var(--bg-elevated);">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded hairline-all flex items-center justify-center shrink-0" style="background-color: var(--bg-primary);">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+              </div>
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-monowide block" style="color: var(--text-secondary);">GMAIL</span>
+                <a href="mailto:mustxdev@gmail.com" class="font-mono font-mono-ltr text-sm sm:text-base font-medium hover:underline">
+                  mustxdev@gmail.com
+                </a>
+              </div>
+            </div>
+            <button 
+              id="copyGmailBtn" 
+              type="button" 
+              onclick="copyText('mustxdev@gmail.com', 'copyGmailBtn')"
+              class="btn-ghost rounded px-3 py-1.5 font-mono text-xs uppercase tracking-monowide cursor-pointer"
+            >
+              <span data-i18n="copyBtn">COPY</span>
+            </button>
+          </div>
+
+          <!-- Instagram Row -->
+          <a href="https://www.instagram.com/mustafa.abkh0?hvrq=MWpuZDZxamNpNjhrdw%3D%3D&utm_source=qr" target="_blank" rel="noreferrer" class="hairline-all rounded-md p-4 sm:p-5 flex items-center justify-between gap-4 group" style="background-color: var(--bg-elevated);">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded hairline-all flex items-center justify-center shrink-0" style="background-color: var(--bg-primary);">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+              </div>
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-monowide block" style="color: var(--text-secondary);">INSTAGRAM</span>
+                <span class="font-mono font-mono-ltr text-sm sm:text-base font-medium">@mustafa.abkh0</span>
+              </div>
+            </div>
+            <span class="btn-ghost rounded px-3 py-1.5 font-mono font-mono-ltr text-xs uppercase tracking-monowide">OPEN ↗</span>
+          </a>
+
+          <!-- TikTok Row -->
+          <a href="https://www.tiktok.com/@mchha?_r=1&_t=ZS-9BXaI3vhnWu" target="_blank" rel="noreferrer" class="hairline-all rounded-md p-4 sm:p-5 flex items-center justify-between gap-4 group" style="background-color: var(--bg-elevated);">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded hairline-all flex items-center justify-center shrink-0" style="background-color: var(--bg-primary);">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+              </div>
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-monowide block" style="color: var(--text-secondary);">TIKTOK</span>
+                <span class="font-mono font-mono-ltr text-sm sm:text-base font-medium">@mchha</span>
+              </div>
+            </div>
+            <span class="btn-ghost rounded px-3 py-1.5 font-mono font-mono-ltr text-xs uppercase tracking-monowide">OPEN ↗</span>
+          </a>
+
+          <!-- GitHub Row -->
+          <a href="https://github.com/mustxdev" target="_blank" rel="noreferrer" class="hairline-all rounded-md p-4 sm:p-5 flex items-center justify-between gap-4 group" style="background-color: var(--bg-elevated);">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded hairline-all flex items-center justify-center shrink-0" style="background-color: var(--bg-primary);">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+              </div>
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-monowide block" style="color: var(--text-secondary);">GITHUB</span>
+                <span class="font-mono font-mono-ltr text-sm sm:text-base font-medium">github.com/mustxdev</span>
+              </div>
+            </div>
+            <span class="btn-ghost rounded px-3 py-1.5 font-mono font-mono-ltr text-xs uppercase tracking-monowide">OPEN ↗</span>
+          </a>
+
+          <!-- Discord Handle Row -->
+          <div class="hairline-all rounded-md p-4 sm:p-5 flex flex-wrap items-center justify-between gap-4" style="background-color: var(--bg-elevated);">
+            <div class="flex items-center gap-3.5">
+              <div class="w-10 h-10 rounded hairline-all flex items-center justify-center shrink-0" style="background-color: var(--bg-primary);">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18 9a5 5 0 0 0-5-5h-2a5 5 0 0 0-5 5v6a5 5 0 0 0 5 5h2a5 5 0 0 0 5-5V9Z"/><circle cx="9.5" cy="12" r="1" fill="currentColor"/><circle cx="14.5" cy="12" r="1" fill="currentColor"/></svg>
+              </div>
+              <div>
+                <span class="font-mono text-[11px] uppercase tracking-monowide block" style="color: var(--text-secondary);">DISCORD // ID: 237237691505311744</span>
+                <a href="https://discord.com/users/237237691505311744" target="_blank" rel="noreferrer" class="font-mono font-mono-ltr text-sm sm:text-base font-medium hover:underline">@mu6t</a>
+              </div>
+            </div>
+            <button 
+              id="copyDiscordBtn" 
+              type="button" 
+              onclick="copyText('mu6t', 'copyDiscordBtn')"
+              class="btn-ghost rounded px-3 py-1.5 font-mono text-xs uppercase tracking-monowide cursor-pointer"
+            >
+              <span data-i18n="copyBtn2">COPY</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Right 5 Columns: LIVE ACTION DISCORD RICH PRESENCE CARD -->
+        <div class="lg:col-span-5">
+          <div class="rounded-md hairline-all overflow-hidden" style="background-color: var(--bg-elevated);">
+            
+            <!-- Terminal Top Bar -->
+            <div class="px-5 py-3.5 hairline-b flex items-center justify-between" style="background-color: var(--bg-primary);">
+              <div class="flex items-center gap-2 font-mono font-mono-ltr text-xs uppercase tracking-monowide">
+                <span class="relative flex h-2.5 w-2.5">
+                  <span id="discordPulseRing" class="status-pulse absolute inline-flex h-full w-full rounded-full opacity-75" style="background-color: var(--text-primary);"></span>
+                  <span id="discordStatusDot" class="relative inline-flex rounded-full h-2.5 w-2.5" style="background-color: var(--text-primary);"></span>
+                </span>
+                <span data-i18n="discordLiveHeader">DISCORD // LIVE TELEMETRY</span>
+              </div>
+              <span id="discordStatusBadge" class="font-mono font-mono-ltr text-[11px] uppercase tracking-monowide px-2 py-0.5 rounded hairline-all">
+                ONLINE
+              </span>
+            </div>
+
+            <!-- Discord User Identity & Live Activity Body -->
+            <div class="p-5 sm:p-6 space-y-6">
+              
+              <!-- User Profile Row -->
+              <div class="flex items-center gap-4">
+                <div class="relative w-14 h-14 rounded-full hairline-all flex items-center justify-center font-mono font-bold text-base shrink-0" style="background-color: var(--bg-primary);">
+                  <span>MX</span>
+                  <!-- Avatar Corner Status Dot -->
+                  <span 
+                    id="avatarCornerDot"
+                    class="absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2" 
+                    style="background-color: var(--text-primary); border-color: var(--bg-elevated);"
+                  ></span>
+                </div>
+                <div>
+                  <h3 class="text-lg font-bold tracking-tight flex items-center gap-2">
+                    <span>Mustx</span>
+                    <span class="font-mono font-mono-ltr text-[10px] uppercase tracking-monowide px-1.5 py-0.5 rounded hairline-all" style="color: var(--text-secondary);">DEV</span>
+                  </h3>
+                  <p id="discordCustomStatus" class="text-xs font-mono mt-0.5" style="color: var(--text-secondary);">
+                    // Building resilient systems
+                  </p>
+                </div>
+              </div>
+
+              <!-- Live Pop-Out Activity Box -->
+              <div id="discordActivityBox" class="rounded p-4 hairline-all space-y-3 transition-all" style="background-color: var(--bg-primary);">
+                <div class="flex items-center justify-between">
+                  <span id="activityTypeLabel" class="font-mono text-[11px] uppercase tracking-monowide" style="color: var(--text-secondary);">
+                    WORKING ON // IDE
+                  </span>
+                  <span id="activityTimer" class="font-mono font-mono-ltr text-xs" style="color: var(--text-secondary);">
+                    01:42:19
+                  </span>
+                </div>
+
+                <div class="flex items-start gap-3.5">
+                  <!-- Dynamic Monochrome Activity Icon -->
+                  <div id="activityIconContainer" class="w-11 h-11 rounded hairline-all flex items-center justify-center shrink-0" style="background-color: var(--bg-elevated);">
+                    <!-- Filled via JS -->
+                  </div>
+                  <div class="min-w-0 flex-1">
+                    <p id="activityTitle" class="text-sm font-bold truncate">
+                      Visual Studio Code — DevSecOps Core
+                    </p>
+                    <p id="activityDetails" class="text-xs truncate mt-0.5" style="color: var(--text-secondary);">
+                      Editing main.go &amp; docker-compose.yml
+                    </p>
+                    <p id="activityState" class="font-mono text-[11px] truncate mt-1" style="color: var(--text-secondary);">
+                      Workspace: mustx-infrastructure
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Minimalist Footer -->
+      <footer class="pt-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-xs uppercase tracking-monowide" style="color: var(--text-secondary);">
+        <div>
+          © 2026 MUSTX // EGO + OBSESSION
+        </div>
+        <div class="font-mono-ltr">
+          FULL-STACK • DEVSECOPS • SECURITY • DESIGN
+        </div>
+      </footer>
+    </section>
+  </main>
+
+  <!-- ========================================================= -->
+  <!-- INTERACTIVE JAVASCRIPT: I18N (EN/AR/KU), SKILLS, DISCORD  -->
+  <!-- ========================================================= -->
+  <script>
+    // -----------------------------------------------------------
+    // 1. MONOCHROME THEME INVERT TOGGLE
+    // -----------------------------------------------------------
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIndicator = document.getElementById('themeIndicator');
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      themeIndicator.style.backgroundColor = isLight ? 'transparent' : 'var(--text-primary)';
+    });
+
+    // -----------------------------------------------------------
+    // 2. PHOTO UPLOAD HANDLER (GRAYSCALE MONOCHROME PORTRAIT)
+    // -----------------------------------------------------------
+    function handlePortraitUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.getElementById('userPortraitImg');
+        const placeholder = document.getElementById('defaultAvatarPlaceholder');
+        img.src = e.target.result;
+        img.classList.remove('hidden');
+        placeholder.classList.add('hidden');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // -----------------------------------------------------------
+    // 3. COPY TO CLIPBOARD HELPER
+    // -----------------------------------------------------------
+    function copyText(text, btnId) {
+      const tempInput = document.createElement('input');
+      tempInput.value = text;
+      document.body.appendChild(tempInput);
+      tempInput.select();
+      document.execCommand('copy');
+      document.body.removeChild(tempInput);
+
+      const btn = document.getElementById(btnId);
+      const originalHTML = btn.innerHTML;
+      btn.textContent = '✓ COPIED';
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+      }, 1800);
+    }
+
+    // -----------------------------------------------------------
+    // 4. 8 INTERACTIVE SKILLS DATA (EN / AR / KU)
+    // -----------------------------------------------------------
+    const skillsData = [
+      {
+        id: 'web-design',
+        num: '01',
+        icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>`,
+        en: {
+          title: 'Website Designer',
+          desc: 'Designing sharp, high-contrast, minimalist web interfaces built on Swiss grid systems, strong typographic hierarchy, and responsive mobile-first layouts that convert visitors into clients.',
+          tags: ['UI/UX Architecture', 'Swiss Grid Systems', 'Responsive Design', 'Interactive Prototyping']
+        },
+        ar: {
+          title: 'مصمم مواقع إلكترونية',
+          desc: 'تصميم واجهات ويب عصرية عالية التباين وبأسلوب بسيط واحترافي يعتمد على الشبكات الهندسية الدقيقة، وتجربة مستخدم سلسة متجاوبة مع جميع الشاشات.',
+          tags: ['تصميم واجهات UI/UX', 'أنظمة الشبكة السويسرية', 'تصميم متجاوب', 'نماذج تفاعلية']
+        },
+        ku: {
+          title: 'دیزاینەری وێبسایت',
+          desc: 'دیزاینکردنی ڕووکاری وێبسایتی سادە و پڕۆفیشناڵ بە شێوازی مۆدێرن و گونجاو بۆ هەموو شاشەکان، بە گرنگیدان بە وردەکاری و ئەزموونی بەکارهێنەر.',
+          tags: ['دیزاینی UI/UX', 'سیستەمی گرید', 'دیزاینی گونجاو بۆ مۆبایل', 'پڕۆتۆتایپ']
+        }
+      },
+      {
+        id: 'networking',
+        num: '02',
+        icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="9" y="2" width="6" height="6" rx="1"/><rect x="2" y="16" width="6" height="6" rx="1"/><rect x="16" y="16" width="6" height="6" rx="1"/><path d="M12 8v4m0 0H5v4m7-4h7v4"/></svg>`,
+        en: {
+          title: 'Networking',
+          desc: 'Architecting, configuring, and troubleshooting enterprise and local networks—covering TCP/IP routing, VLAN segmentation, firewall hardening, DNS management, and encrypted VPN tunnels.',
+          tags: ['TCP/IP & Routing', 'VLAN & Switching', 'Firewall Hardening', 'VPN & WireGuard']
+        },
+        ar: {
+          title: 'الشبكات (Networking)',
+          desc: 'تصميم وإعداد وإدارة الشبكات المحلية والمؤسسية، بما يشمل التوجيه (Routing)، تقسيم الشبكات (VLAN)، تأمين الجدران النارية، وإدارة خوادم DNS والشبكات الافتراضية المشفرة.',
+          tags: ['بروتوكولات TCP/IP', 'تقسيم VLAN', 'تأمين الجدران النارية', 'شبكات VPN']
+        },
+        ku: {
+          title: 'نێتۆرکینگ',
+          desc: 'دروستکردن و ڕێکخستن و پاراستنی تۆڕە ناوخۆیی و گشتییەکان، لەوانە Routing، دابەشکردنی VLAN، پاراستنی فایەروۆڵ و دروستکردنی VPNی پارێزراو.',
+          tags: ['TCP/IP و ڕاوتینگ', 'VLAN و سویچینگ', 'پاراستنی فایەروۆڵ', 'VPN و WireGuard']
+        }
+      },
+      {
+        id: 'banking',
+        num: '03',
+        icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><polygon points="12 2 2 7 22 7 12 2"/><line x1="6" y1="10" x2="6" y2="18"/><line x1="10" y1="10" x2="10" y2="18"/><line x1="14" y1="10" x2="14" y2="18"/><line x1="18" y1="10" x2="18" y2="18"/><line x1="2" y1="21" x2="22" y2="21"/></svg>`,
+        en: {
+          title: 'Banking Operations',
+          desc: 'Deep operational understanding of digital banking workflows, payment gateways, cross-border transfers, financial compliance, reconciliation protocols, and secure fintech integrations.',
+          tags: ['Digital Payments', 'Financial Compliance', 'Ledger Reconciliation', 'Fintech Workflows']
+        },
+        ar: {
+          title: 'العمليات المصرفية',
+          desc: 'فهم عميق للعمليات المصرفية الرقمية، بوابات الدفع الإلكتروني، التحويلات المالية، المطابقة المحاسبية، ومعايير الامتثال المالي وربط الأنظمة المصرفية.',
+          tags: ['المدفوعات الرقمية', 'الامتثال المالي', 'المطابقة المصرفية', 'التقنية المالية']
+        },
+        ku: {
+          title: 'کاروباری بانکی',
+          desc: 'شارەزایی تەواو لە سیستەمە بانکییە دیجیتاڵییەکان، دەروازەکانی پارەدان، حەواڵەی دارایی، یەکخستنەوەی حسابات و پەیوەستکردنی سیستەمە داراییەکان.',
+          tags: ['پارەدانی دیجیتاڵی', 'ڕێنمایی دارایی', 'یەکخستنەوەی حسابات', 'فینتێک']
+        }
+      },
+      {
+        id: 'seller',
+        num: '04',
+        icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>`,
+        en: {
+          title: 'Sales & Commerce',
+          desc: 'Strategic product positioning, client negotiation, e-commerce funnel optimization, and closing high-value digital and technical deals with clear ROI communication.',
+          tags: ['Client Negotiation', 'E-Commerce Funnels', 'Product Positioning', 'B2B & B2C Sales']
+        },
+        ar: {
+          title: 'المبيعات والتجارة',
+          desc: 'خبرة في تسويق المنتجات الرقمية والتقنية، التفاوض مع العملاء، بناء مسارات البيع الإلكتروني، وإتمام الصفقات التجارية بكفاءة عالية.',
+          tags: ['التفاوض التجاري', 'التجارة الإلكترونية', 'تسويق المنتجات', 'إدارة المبيعات']
+        },
+        ku: {
+          title: 'فرۆشتن و بازرگانی',
+          desc: 'شارەزایی لە بەبازاڕکردنی بەرهەمە دیجیتاڵی و تەکنەلۆژییەکان، گفتوگۆ لەگەڵ کڕیاران، بەڕێوەبردنی فرۆشتنی ئۆنلاین و ئەنجامدانی گرێبەستە بازرگانییەکان.',
+          tags: ['گفتوگۆی بازرگانی', 'بازرگانی ئەلیکترۆنی', 'بەبازاڕکردن', 'بەڕێوەبردنی فرۆشتن']
+        }
+      },
+      {
+        id: 'accounting',
+        num: '05',
+        icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="10" y2="11"/><line x1="14" y1="11" x2="16" y2="11"/><line x1="8" y1="15" x2="10" y2="15"/><line x1="14" y1="15" x2="16" y2="15"/><line x1="8" y1="19" x2="16" y2="19"/></svg>`,
+        en: {
+          title: 'Accounting',
+          desc: 'Structured bookkeeping, balance sheet analysis, cash-flow tracking, cost auditing, and automated financial reporting to keep businesses profitable and transparent.',
+          tags: ['Financial Statements', 'Cash-Flow Auditing', 'Bookkeeping', 'Cost Optimization']
+        },
+        ar: {
+          title: 'المحاسبة (Accounting)',
+          desc: 'إدارة الدفاتر المحاسبية، تحليل الميزانيات العمومية، تتبع التدفقات النقدية، التدقيق المالي، وإعداد التقارير المحاسبية الدقيقة لدعم اتخاذ القرار.',
+          tags: ['القوائم المالية', 'تدقيق التدفقات النقدية', 'مسك الدفاتر', 'تحليل التكاليف']
+        },
+        ku: {
+          title: 'ژمێریاری',
+          desc: 'بەڕێوەبردنی تۆمارە داراییەکان، شیکردنەوەی میزانییە، چاودێریکردنی داهات و خەرجی، وردبینی دارایی و ئامادەکردنی ڕاپۆرتی ژمێریاری ورد.',
+          tags: ['ڕاپۆرتی دارایی', 'وردبینی حسابات', 'تۆمارکردنی ژمێریاری', 'کەمکردنەوەی تێچوو']
+        }
+      },
+      {
+        id: 'cybersecurity',
+        num: '06',
+        icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`,
+        en: {
+          title: 'Cybersecurity',
+          desc: 'Offensive and defensive security engineering—vulnerability assessments, web application penetration testing, zero-trust authentication, and hardening Linux/cloud servers against intrusion.',
+          tags: ['Penetration Testing', 'Vulnerability Audits', 'Server Hardening', 'Zero-Trust Security']
+        },
+        ar: {
+          title: 'الأمن السيبراني',
+          desc: 'هندسة الأمن الدفاعي والهجومي، فحص الثغرات الأمنية، اختبار اختراق تطبيقات الويب، تطبيق أنظمة المصادقة الصفرية، وتحصين الخوادم ضد الهجمات.',
+          tags: ['اختبار الاختراق', 'فحص الثغرات', 'تحصين الخوادم', 'أمن المعلومات']
+        },
+        ku: {
+          title: 'ئاسایشی سایبەری',
+          desc: 'پاراستن و پشکنینی ئەمنی سیستەم و وێبسایتەکان، دۆزینەوەی کەلێنە ئەمنییەکان، تاقیکردنەوەی بەرگری (Penetration Testing) و پاراستنی سێرڤەرەکان.',
+          tags: ['تاقیکردنەوەی بەرگری', 'پشکنینی کەلێنەکان', 'پاراستنی سێرڤەر', 'ئاسایشی داتا']
+        }
+      },
+      {
+        id: 'software-eng',
+        num: '07',
+        icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+        en: {
+          title: 'Software Engineering',
+          desc: 'End-to-end full-stack engineering and DevSecOps automation—designing scalable APIs, clean database schemas, containerized deployments, and high-speed modern web applications.',
+          tags: ['Full-Stack Architecture', 'DevSecOps Pipelines', 'REST & GraphQL APIs', 'Clean Code']
+        },
+        ar: {
+          title: 'هندسة البرمجيات',
+          desc: 'تطوير البرمجيات المتكاملة (Full-Stack) وأتمتة DevSecOps، بناء واجهات برمجة التطبيقات القابلة للتوسع، تصميم قواعد البيانات، ونشر التطبيقات السحابية.',
+          tags: ['تطوير Full-Stack', 'أتمتة DevSecOps', 'بناء APIs', 'هندسة قواعد البيانات']
+        },
+        ku: {
+          title: 'ئەندازیاری نەرمەکاڵا',
+          desc: 'پەرەپێدانی تەواوەتی نەرمەکاڵا و وێبسایت (Full-Stack) و ئۆتۆماتیککردنی DevSecOps، دروستکردنی APIی خێرا، بنکەی دراوە و سیستەمی سەقامگیر.',
+          tags: ['گەشەپێدانی Full-Stack', 'DevSecOps', 'دروستکردنی API', 'کۆدی خاوێن']
+        }
+      },
+      {
+        id: 'it-infra',
+        num: '08',
+        icon: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="3" width="20" height="6" rx="1"/><rect x="2" y="15" width="20" height="6" rx="1"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg>`,
+        en: {
+          title: 'IT Infrastructure',
+          desc: 'Complete technical operations management—Linux & Windows server administration, virtualization clusters, automated backup strategies, hardware diagnostics, and 99.9% uptime maintenance.',
+          tags: ['Linux Administration', 'Virtualization', 'Backup & Recovery', 'System Diagnostics']
+        },
+        ar: {
+          title: 'البنية التحتية لتقنية المعلومات',
+          desc: 'إدارة العمليات التقنية المتكاملة، إدارة خوادم لينكس وويندوز، الأنظمة الافتراضية، استراتيجيات النسخ الاحتياطي التلقائي، وضمان استمرارية العمل بأعلى كفاءة.',
+          tags: ['إدارة خوادم Linux', 'الأنظمة الافتراضية', 'النسخ الاحتياطي', 'الدعم الفني المتقدم']
+        },
+        ku: {
+          title: 'ژێرخانی ئایتی (IT)',
+          desc: 'بەڕێوەبردنی تەواوی سیستەمە تەکنیکییەکان، بەڕێوەبردنی سێرڤەرەکانی Linux و Windows، سیستەمی باکئەپ و پاراستنی بەردەوامی کارکردنی سیستەمەکان.',
+          tags: ['بەڕێوەبردنی سێرڤەر', 'سیستەمی باکئەپ', 'چاککردنەوەی کێشەکان', 'بەڕێوەبردنی IT']
+        }
+      }
+    ];
+
+    let currentLang = 'en';
+    let activeSkillIndex = 0;
+
+    function renderSkillsGrid() {
+      const grid = document.getElementById('skillsGrid');
+      grid.innerHTML = skillsData.map((skill, idx) => {
+        const localized = skill[currentLang];
+        const isActive = idx === activeSkillIndex;
+        return `
+          <button
+            type="button"
+            onclick="selectSkill(${idx})"
+            class="skill-card ${isActive ? 'active' : ''} rounded-md p-4 sm:p-5 text-start flex flex-col justify-between gap-5 cursor-pointer"
+          >
+            <div class="flex items-center justify-between w-full">
+              <div class="w-9 h-9 rounded hairline-all flex items-center justify-center" style="background-color: var(--bg-primary);">
+                ${skill.icon}
+              </div>
+              <span class="font-mono font-mono-ltr text-xs" style="color: var(--text-secondary);">
+                ${skill.num}
+              </span>
+            </div>
+            <div>
+              <h3 class="text-sm sm:text-base font-bold tracking-tight leading-snug">
+                ${localized.title}
+              </h3>
+            </div>
+          </button>
+        `;
+      }).join('');
+
+      updateSkillInspector();
+    }
+
+    function selectSkill(idx) {
+      activeSkillIndex = idx;
+      renderSkillsGrid();
+    }
+
+    function updateSkillInspector() {
+      const skill = skillsData[activeSkillIndex];
+      const localized = skill[currentLang];
+
+      document.getElementById('inspectorIcon').innerHTML = skill.icon;
+      document.getElementById('inspectorIndex').textContent = `SKILL // ${skill.num}`;
+      document.getElementById('inspectorTitle').textContent = localized.title;
+      document.getElementById('inspectorDesc').textContent = localized.desc;
+      document.getElementById('inspectorBullets').innerHTML = localized.tags
+        .map(tag => `<span class="hairline-all rounded px-2.5 py-1 font-mono text-[11px] uppercase tracking-monowide" style="background-color: var(--bg-primary);">${tag}</span>`)
+        .join('');
+    }
+
+    // -----------------------------------------------------------
+    // 5. LIVE DISCORD RICH PRESENCE ENGINE (LANYARD API)
+    // -----------------------------------------------------------
+    const DISCORD_USER_ID = '237237691505311744';
+    const discordIcons = {
+      code: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`,
+      music: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`,
+      online: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>`,
+      offline: `<svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M18.36 6.64a9 9 0 1 1-12.73 0"/><line x1="12" y1="2" x2="12" y2="12"/></svg>`
+    };
+
+    let activityStartTimestamp = null;
+
+    function updateDiscordIndicator(isOnline) {
+      const pulseRing = document.getElementById('discordPulseRing');
+      const statusDot = document.getElementById('discordStatusDot');
+      const avatarDot = document.getElementById('avatarCornerDot');
+
+      if (isOnline) {
+        pulseRing.classList.remove('hidden');
+        statusDot.style.opacity = '1';
+        avatarDot.style.backgroundColor = 'var(--text-primary)';
+      } else {
+        pulseRing.classList.add('hidden');
+        statusDot.style.opacity = '0.35';
+        avatarDot.style.backgroundColor = 'var(--text-secondary)';
+      }
+    }
+
+    async function fetchDiscordPresence() {
+      try {
+        const res = await fetch(`https://api.lanyard.rest/v1/users/${DISCORD_USER_ID}`);
+        const json = await res.json();
+
+        if (!json.success || !json.data) {
+          throw new Error('User not monitored by Lanyard');
+        }
+
+        const data = json.data;
+        const status = (data.discord_status || 'offline').toUpperCase();
+        const isOnline = data.discord_status && data.discord_status !== 'offline';
+
+        document.getElementById('discordStatusBadge').textContent = status;
+        updateDiscordIndicator(isOnline);
+
+        const customActivity = (data.activities || []).find(a => a.type === 4);
+        document.getElementById('discordCustomStatus').textContent =
+          customActivity && customActivity.state
+            ? `// ${customActivity.state}`
+            : (isOnline ? '// Online on Discord (@mu6t)' : '// Currently offline');
+
+        const mainActivity = (data.activities || []).find(a => a.type !== 4);
+
+        if (data.listening_to_spotify && data.spotify) {
+          document.getElementById('activityTypeLabel').textContent = 'LISTENING TO // SPOTIFY';
+          document.getElementById('activityTitle').textContent = data.spotify.song;
+          document.getElementById('activityDetails').textContent = `by ${data.spotify.artist}`;
+          document.getElementById('activityState').textContent = `Album: ${data.spotify.album}`;
+          document.getElementById('activityIconContainer').innerHTML = discordIcons.music;
+          activityStartTimestamp = data.spotify.timestamps?.start || null;
+        } else if (mainActivity) {
+          const typeLabels = { 0: 'PLAYING // ACTIVITY', 1: 'STREAMING // LIVE', 2: 'LISTENING // AUDIO', 3: 'WATCHING // MEDIA' };
+          document.getElementById('activityTypeLabel').textContent = typeLabels[mainActivity.type] || 'ACTIVE // APPLICATION';
+          document.getElementById('activityTitle').textContent = mainActivity.name || 'Active';
+          document.getElementById('activityDetails').textContent = mainActivity.details || 'Running on desktop';
+          document.getElementById('activityState').textContent = mainActivity.state || 'Discord Rich Presence';
+          document.getElementById('activityIconContainer').innerHTML = discordIcons.code;
+          activityStartTimestamp = mainActivity.timestamps?.start || null;
+        } else if (isOnline) {
+          document.getElementById('activityTypeLabel').textContent = `ACTIVE // DISCORD ${status}`;
+          document.getElementById('activityTitle').textContent = 'Online on Discord';
+          document.getElementById('activityDetails').textContent = 'Available for direct messages (@mu6t)';
+          document.getElementById('activityState').textContent = `ID: ${DISCORD_USER_ID}`;
+          document.getElementById('activityIconContainer').innerHTML = discordIcons.online;
+          activityStartTimestamp = null;
+        } else {
+          document.getElementById('activityTypeLabel').textContent = 'STATUS // OFFLINE';
+          document.getElementById('activityTitle').textContent = 'System Standby';
+          document.getElementById('activityDetails').textContent = 'Leave a message on Discord (@mu6t) or Gmail';
+          document.getElementById('activityState').textContent = 'Will respond upon reconnect';
+          document.getElementById('activityIconContainer').innerHTML = discordIcons.offline;
+          activityStartTimestamp = null;
+        }
+      } catch (err) {
+        document.getElementById('discordStatusBadge').textContent = 'SYNC';
+        document.getElementById('discordCustomStatus').textContent = '// @mu6t — Waiting for Lanyard sync';
+        document.getElementById('activityTypeLabel').textContent = 'TELEMETRY // SETUP';
+        document.getElementById('activityTitle').textContent = 'Join discord.gg/lanyard';
+        document.getElementById('activityDetails').textContent = 'Join Lanyard server once with @mu6t';
+        document.getElementById('activityState').textContent = `ID: ${DISCORD_USER_ID}`;
+        document.getElementById('activityIconContainer').innerHTML = discordIcons.offline;
+        activityStartTimestamp = null;
+        updateDiscordIndicator(false);
+      }
+    }
+
+    // Live ticking elapsed timer when an activity timestamp is present
+    setInterval(() => {
+      if (!activityStartTimestamp) {
+        document.getElementById('activityTimer').textContent = '--:--:--';
+        return;
+      }
+      const diffSec = Math.max(0, Math.floor((Date.now() - activityStartTimestamp) / 1000));
+      const hrs = String(Math.floor(diffSec / 3600)).padStart(2, '0');
+      const mins = String(Math.floor((diffSec % 3600) / 60)).padStart(2, '0');
+      const secs = String(diffSec % 60).padStart(2, '0');
+      document.getElementById('activityTimer').textContent = `${hrs}:${mins}:${secs}`;
+    }, 1000);
+
+    // -----------------------------------------------------------
+    // 6. FULL 3-LANGUAGE TRANSLATION DICTIONARY (EN / AR / KU)
+    // -----------------------------------------------------------
+    const translations = {
+      en: {
+        dir: 'ltr',
+        navIntro: 'Intro',
+        navSkills: 'Skills',
+        navStack: 'Stack',
+        navContact: 'Contact',
+        heroEyebrow: '[ 00 — CORE DRIVER ]',
+        obsessionWord: 'OBSESSION',
+        interviewBadge: 'PROFILE INTERVIEW // MUSTX',
+        greetingPrefix: 'I am ',
+        heroName: 'Mustx',
+        heroRoles: 'Full-Stack DevSecOps • Full-Stack Developer • Website Designer • Cybersecurity • Networking • Accounting',
+        interviewQ1: 'Q: WHO IS MUSTX & WHAT DO YOU BUILD?',
+        interviewA1: 'I am a multidisciplinary Full-Stack DevSecOps engineer, web designer, and security-focused builder. I bridge clean Swiss-grade visual design with hardened server infrastructure, networking, and financial logic—turning complex ideas into resilient digital systems.',
+        interviewQ2: 'Q: WHAT DEFINES YOUR WORK ETHIC?',
+        interviewA2: 'Relentless precision. Whether configuring secure networks, balancing accounting ledgers, or shipping production code, I treat every detail as mission-critical.',
+        ctaExploreSkills: 'Explore My Skills',
+        ctaConnect: 'Connect & Live Discord',
+        photoHint: 'UPLOAD YOUR PHOTO TO DISPLAY IN MONOCHROME',
+        uploadPhotoBtn: '+ INSERT / CHANGE PHOTO',
+        heroQuote: '“Ego + obsession forged every line of code, every system, and everything I have become.”',
+        skillsEyebrow: '[ 01 — CORE COMPETENCIES ]',
+        skillsTitle: 'Multidisciplinary Skills',
+        skillsInstruction: 'PRESS ANY SKILL CARD TO INSPECT DETAILS',
+        stackEyebrow: '[ 02 — TECHNICAL ARSENAL ]',
+        stackTitle: 'Languages, DevOps & Tooling',
+        stackLangHeading: 'Programming & Markup Languages',
+        stackToolsHeading: 'DevSecOps, Containers & Infrastructure',
+        contactEyebrow: '[ 03 — DIRECT CHANNELS & TELEMETRY ]',
+        contactTitle: 'Connect With Mustx',
+        copyBtn: 'COPY',
+        copyBtn2: 'COPY',
+        discordLiveHeader: 'DISCORD // LIVE TELEMETRY',
+        discordSimLabel: 'PREVIEW LIVE PRESENCE STATES:'
+      },
+      ar: {
+        dir: 'rtl',
+        navIntro: 'نبذة عني',
+        navSkills: 'المهارات',
+        navStack: 'التقنيات',
+        navContact: 'تواصل معي',
+        heroEyebrow: '[ 00 — الدافع الأساسي ]',
+        obsessionWord: 'OBSESSION // الهوس',
+        interviewBadge: 'مقابلة تعريفية // MUSTX',
+        greetingPrefix: 'أنا ',
+        heroName: 'Mustx',
+        heroRoles: 'مطور Full-Stack DevSecOps • مبرمج متكامل • مصمم مواقع • أمن سيبراني • شبكات • محاسبة',
+        interviewQ1: 'س: من هو Mustx وما الذي تبنيه؟',
+        interviewA1: 'أنا مهندس برمجيات متكامل (Full-Stack DevSecOps)، مصمم مواقع، ومختص في الأمن السيبراني. أجمع بين التصميم البصري النظيف والبنية التحتية المؤمنة للخوادم والشبكات والمنطق المحاسبي لبناء أنظمة رقمية قوية ومستقرة.',
+        interviewQ2: 'س: ما الذي يميز أسلوب عملك؟',
+        interviewA2: 'الدقة اللامتناهية. سواء في تأمين الشبكات، أو تدقيق الحسابات المالية، أو كتابة الأكواد البرمجية، أتعامل مع كل تفصيل بأعلى درجات الاحترافية.',
+        ctaExploreSkills: 'استكشف مهاراتي',
+        ctaConnect: 'تواصل وحالة ديسكورد المباشرة',
+        photoHint: 'ارفع صورتك الشخصية لعرضها بالأبيض والأسود',
+        uploadPhotoBtn: '+ إضافة / تغيير الصورة',
+        heroQuote: '«الأنا + الهوس صاغا كل سطر برمجي، وكل نظام بنيته، وكل ما أصبحت عليه اليوم.»',
+        skillsEyebrow: '[ 01 — الكفاءات الأساسية ]',
+        skillsTitle: 'المهارات متعددة التخصصات',
+        skillsInstruction: 'اضغط على أي مهارة لعرض التفاصيل',
+        stackEyebrow: '[ 02 — الترسانة التقنية ]',
+        stackTitle: 'لغات البرمجة وأدوات DevOps',
+        stackLangHeading: 'لغات البرمجة وقواعد البيانات',
+        stackToolsHeading: 'أدوات DevSecOps والحاويات والبنية التحتية',
+        contactEyebrow: '[ 03 — قنوات التواصل والحالة المباشرة ]',
+        contactTitle: 'تواصل مع Mustx',
+        copyBtn: 'نسخ',
+        copyBtn2: 'نسخ',
+        discordLiveHeader: 'DISCORD // الحالة المباشرة',
+        discordSimLabel: 'معاينة حالات النشاط المباشر:'
+      },
+      ku: {
+        dir: 'rtl',
+        navIntro: 'ناساندن',
+        navSkills: 'شارەزاییەکان',
+        navStack: 'تەکنەلۆژیاکان',
+        navContact: 'پەیوەندی',
+        heroEyebrow: '[ 00 — هێزی سەرەکی ]',
+        obsessionWord: 'OBSESSION // خولیا',
+        interviewBadge: 'چاوپێکەوتنی کورت // MUSTX',
+        greetingPrefix: 'من ',
+        heroName: 'Mustx',
+        heroRoles: 'گەشەپێدەری Full-Stack DevSecOps • پڕۆگرامساز • دیزاینەری وێبسایت • ئاسایشی سایبەری • نێتۆرکینگ • ژمێریاری',
+        interviewQ1: 'پ: Mustx کێیە و چی دروست دەکات؟',
+        interviewA1: 'من ئەندازیاری Full-Stack DevSecOps و دیزاینەری وێبسایت و شارەزای ئاسایشی سایبەریم. دیزاینی سادە و مۆدێرن لەگەڵ سێرڤەری پارێزراو، نێتۆرکینگ و سیستەمی ژمێریاری تێکەڵ دەکەم بۆ دروستکردنی سیستەمی دیجیتاڵی بەهێز.',
+        interviewQ2: 'پ: چی شێوازی کارکردنت جیادەکاتەوە؟',
+        interviewA2: 'وردبینی بەردەوام. چ لە ڕێکخستنی تۆڕە پارێزراوەکان بێت، یان ژمێریاری، یان نووسینی کۆد، گرنگی تەواو بە هەموو وردەکارییەک دەدەم.',
+        ctaExploreSkills: 'شارەزاییەکانم ببینە',
+        ctaConnect: 'پەیوەندی و دۆخی ڕاستەوخۆی دیسکۆرد',
+        photoHint: 'وێنەکەت دابنێ بۆ پیشاندانی بە ڕەش و سپی',
+        uploadPhotoBtn: '+ دانان / گۆڕینی وێنە',
+        heroQuote: '«ئیگۆ + خولیا هەموو دێڕە کۆدێک، هەموو سیستەمێک و هەموو ئەوەی ئەمڕۆ پێی گەیشتووم دروست کردووە.»',
+        skillsEyebrow: '[ 01 — لێهاتووییە سەرەکییەکان ]',
+        skillsTitle: 'شارەزاییە جۆراوجۆرەکانم',
+        skillsInstruction: 'کرتە لە هەر بەشێک بکە بۆ خوێندنەوەی وردەکاری',
+        stackEyebrow: '[ 02 — ئامرازە تەکنیکییەکان ]',
+        stackTitle: 'زمانەکانی پڕۆگرامسازی و DevOps',
+        stackLangHeading: 'زمانەکانی پڕۆگرامسازی',
+        stackToolsHeading: 'ئامرازەکانی DevSecOps و سێرڤەر',
+        contactEyebrow: '[ 03 — کەناڵەکانی پەیوەندی ]',
+        contactTitle: 'پەیوەندی لەگەڵ Mustx',
+        copyBtn: 'کۆپی',
+        copyBtn2: 'کۆپی',
+        discordLiveHeader: 'DISCORD // چالاکی ڕاستەوخۆ',
+        discordSimLabel: 'تاقیکردنەوەی دۆخەکانی دیسکۆرد:'
+      }
+    };
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      const dict = translations[lang];
+
+      // Set HTML lang & RTL/LTR direction
+      document.documentElement.lang = lang;
+      document.documentElement.dir = dict.dir;
+
+      // Update active button state in header
+      document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.style.backgroundColor = 'transparent';
+        btn.style.color = 'var(--text-secondary)';
+      });
+      const activeLangBtn = document.getElementById(`lang-${lang}`);
+      if (activeLangBtn) {
+        activeLangBtn.style.backgroundColor = 'var(--btn-primary-bg)';
+        activeLangBtn.style.color = 'var(--btn-primary-text)';
+      }
+
+      // Update all static text nodes
+      document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (dict[key]) {
+          el.textContent = dict[key];
+        }
+      });
+
+      // Re-render Skills Matrix & Inspector in chosen language
+      renderSkillsGrid();
+    }
+
+    // -----------------------------------------------------------
+    // 7. INITIALIZE ON LOAD
+    // -----------------------------------------------------------
+    window.addEventListener('DOMContentLoaded', () => {
+      setLanguage('en');
+      fetchDiscordPresence();
+      setInterval(fetchDiscordPresence, 15000);
+    });
+  </script>
+</body>
+</html>
